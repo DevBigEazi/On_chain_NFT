@@ -7,7 +7,8 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
-contract RandomColorNFT is ERC721 {
+// RandomColorNFT
+contract On_chain_NFT is ERC721 {
     using EnumerableSet for EnumerableSet.UintSet;
 
     mapping(address => EnumerableSet.UintSet) tokensOwned;
@@ -22,11 +23,11 @@ contract RandomColorNFT is ERC721 {
     constructor() ERC721("RandomColorNFT", "RCNFT") {}
 
     function mintTo(address _to) public {
-        counter++;
+        uint256 tokenId = counter++;
 
-        _safeMint(_to, counter);
+        _safeMint(_to, tokenId);
 
-        tokenIdToColor[counter] = generateRandomColor();
+        tokenIdToColor[tokenId] = generateRandomColor();
     }
 
     struct TokenAndMetadata {
@@ -70,7 +71,7 @@ contract RandomColorNFT is ERC721 {
         if (tokenId != counter) {
             tokensOwned[auth].remove(tokenId);
         }
-        
+
         tokensOwned[to].add(tokenId);
 
         return super._update(to, tokenId, auth);
